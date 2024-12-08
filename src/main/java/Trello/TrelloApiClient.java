@@ -7,8 +7,8 @@ import static io.restassured.RestAssured.given;
 
 public class TrelloApiClient {
     private static final String BASE_URL = "https://api.trello.com/1";
-    private String apiKey;
-    private String token;
+    private final String apiKey;
+    private final String token;
 
     public TrelloApiClient(String apiKey, String token) {
         this.apiKey = apiKey;
@@ -16,6 +16,7 @@ public class TrelloApiClient {
         RestAssured.baseURI = BASE_URL;
 
     }
+
 
     public Response createBoard(String boardName) {
         return given()
@@ -68,4 +69,32 @@ public class TrelloApiClient {
                 .queryParam("token", token)
                 .delete("/boards/" + boardId);
     }
+
+    public void moveCard(String cardId, String listId) {
+        Response response = given()
+                .queryParam("idList", listId)
+                .queryParam("key", apiKey)
+                .queryParam("token", token)
+                .when()
+                .put("/cards/" + cardId);
+
+        response.then().log().all();  // Response loglamayı ekleyin
+        System.out.println("Card move response: " + response.getBody().asString());
+        response.then().statusCode(200); // Status kodu doğrulama
+    }
+
+
+
+    public void closeBoard(String boardId) {
+        given()
+                .baseUri("https://api.trello.com/1")
+                .queryParam("key", apiKey)
+                .queryParam("token", token)
+                .queryParam("closed", true)         // required parameter to close the board
+                .when()
+                .put("/boards/" + boardId)
+                .then()
+                .statusCode(200);
+    }
+
 }

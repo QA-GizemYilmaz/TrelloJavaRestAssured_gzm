@@ -7,51 +7,52 @@ public class TrelloTest {
     private TrelloApiClient apiClient;
     private String boardId;
     private String listId;
-    private String cardID_1;
-    private String cardID_2;
+
 
 
 
     @Test
     public void trelloBoardTest() {
-        //String a = "secret";
-        //String token = "secret";
+        String api = "eb56df44a2f126c897e814f1853862b6";
+        String token = "ATTA369bf2490d6bd4275b42a1243c4b91494c25fac580b0e084e1f388ccb04d30a9DF517BCC";
 
-        TrelloApiClient apiClient = new TrelloApiClient(a, t);
+        TrelloApiClient apiClient = new TrelloApiClient(api, token);
         TrelloBoardPage boardPage = new TrelloBoardPage(apiClient);
 
-        //Creating a Board on Trello
-        Response response = apiClient.createBoard("boardName");
-        boardId = response.jsonPath().getString("id");
-        System.out.println("Board created: " + boardId);
 
-        //Creating a List on Trello
-        Response response2 = apiClient.createList(boardId, "listName");
-        listId = response2.jsonPath().getString("id");
-        System.out.println("List created: " + listId);
+        //Creating a Board on Trello
+        String boardId = boardPage.createBoard("VaultN");
+
+        // Creating a List
+        String BacklogListId = boardPage.createList(boardId, "Backlog");
+        String TodolistId = boardPage.createList(boardId, "Todo");
+        String DoinglistId = boardPage.createList(boardId, "Doing");
+        String TestinglistId = boardPage.createList(boardId, "Testing");
+        String DonelistId = boardPage.createList(boardId, "Done");
+
 
         //Creating a Card on Trello
-        Response response3 = apiClient.createCard(listId, "cardName1");
-        cardID_1 = response3.jsonPath().getString("id");
-        System.out.println("Card ID 1: " + cardID_1);
-        //Creating second card
-        Response response4 = apiClient.createCard(listId, "cardName2");
-        cardID_2 = response4.jsonPath().getString("id");
-        System.out.println("Card ID 2: " + cardID_2);
+        String SignupforTrello = boardPage.createCard(TodolistId, "Sign up for Trello");
+        String Getkeyandtoken = boardPage.createCard(TodolistId, "Get key and token");
+        String BuildAcollection = boardPage.createCard(TodolistId, "Build a collection");
+        String WorkingonTask = boardPage.createCard(TodolistId, "Working on Task");
+        String UIAutomation = boardPage.createCard(BacklogListId, "UI Automation");
+        //String WritingTestScenarios = boardPage.createCard(BacklogListId, "Writing Test Scenarios");
 
-        //Choose randomly a card and update it
-        String randomCardId = Math.random() > 0.5 ? cardID_1 : cardID_2;
-        apiClient.updateCard(randomCardId, "Updated_Card");
-        System.out.println("Card ID with " + randomCardId + "is updated randomly");
+        // Moving cards to the specified List
+        boardPage.moveCard(SignupforTrello, DonelistId); // "Sign up for Trello" -> Done
+        boardPage.moveCard(Getkeyandtoken, TestinglistId); // "Get key and token" -> Testing
+        boardPage.moveCard(BuildAcollection, DoinglistId); // "Build a collection" -> Doing
+        boardPage.moveCard(WorkingonTask, DoinglistId); // "Working on Task" -> Doing
 
-        //Deleting Cards on Trello
-        apiClient.deleteCard(cardID_1);
-        apiClient.deleteCard(cardID_2);
-        System.out.println("Cards are removed successfully ! ");
+        // Close the Board
+        boardPage.closeBoard(boardId);
 
-        //Deleting Board on Trello
-        apiClient.deleteBoard(boardId);
-        System.out.println("Board is removed successfully ! ");
+        // Delete the Board
+        boardPage.deleteBoard(boardId);
+
+        System.out.println("All operations completed successfully.");
+
 
 
     }
