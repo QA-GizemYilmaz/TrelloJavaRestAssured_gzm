@@ -9,12 +9,10 @@ public class TrelloTest {
     private String listId;
 
 
-
-
     @Test
     public void trelloBoardTest() {
-        String api = "apihere";
-        String token = "tokenhere";
+        String api = "key";
+        String token = "token";
 
         TrelloApiClient apiClient = new TrelloApiClient(api, token);
         TrelloBoardPage boardPage = new TrelloBoardPage(apiClient);
