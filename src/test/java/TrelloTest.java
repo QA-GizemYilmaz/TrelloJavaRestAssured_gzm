@@ -11,8 +11,8 @@ public class TrelloTest {
 
     @Test
     public void trelloBoardTest() {
-        String api = "key";
-        String token = "token";
+        String api = "YOUR_API_KEY_HERE";
+        String token = "YOUR_TOKEN_HERE";
 
         TrelloApiClient apiClient = new TrelloApiClient(api, token);
         TrelloBoardPage boardPage = new TrelloBoardPage(apiClient);
