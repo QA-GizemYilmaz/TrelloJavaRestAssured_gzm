@@ -13,8 +13,8 @@ public class TrelloTest {
 
     @Test
     public void trelloBoardTest() {
-        String api = "eb56df44a2f126c897e814f1853862b6";
-        String token = "ATTA369bf2490d6bd4275b42a1243c4b91494c25fac580b0e084e1f388ccb04d30a9DF517BCC";
+        String api = "apihere";
+        String token = "tokenhere";
 
         TrelloApiClient apiClient = new TrelloApiClient(api, token);
         TrelloBoardPage boardPage = new TrelloBoardPage(apiClient);
